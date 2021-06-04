@@ -30,6 +30,7 @@ We have partitioned the energy system documentation as follows:
     * [Buildings](#buildings)
     * [Industry](#industry)
     * [Transportation](#transportation)
+    * [Energy-for-water](#energy_for_water)
 * [Energy Trade](#energy-trade)
 * [Mapping the IEA Energy Balances](#mapping-the-iea-energy-balances)
 * [References](#references)
