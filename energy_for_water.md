@@ -47,13 +47,14 @@ Within the following sectors:
 * Industrial manufacturing
 * Municipal water supply
 
-### Modeling energy-for-water
+### Modeling Energy-for-Water
 The modeling approach is documented in Kyle et al. (2021), and consists of the following steps:
 
 * Estimation of water flow volumes of EFW processes and sectors
 * Multiplication of water flow volumes by assumed energy intensities
 * Adjustment of historical energy consumption in the commercial and industrial sectors to accommodate explicitly represented EFW
 
+#### Water Flow Volumes
 As indicated in Table 1, the historical water flow volumes for several of the sectors and processes are estimated in the [GCAM water demand](demand_water.html) part of the model, but even still several modifications are made. Table 2 shows the specific methods of estimation of each modeled water sector and process in the model, as well as the sectors from which base-year energy is re-allocated, and how the demands for each of these water flow volumes are driven in the future time periods.
 
 **Table 2: Methods of estimation of water flow volumes by EFW sectors and processes**
@@ -76,9 +77,40 @@ As indicated in Table 1, the historical water flow volumes for several of the se
 
 <a name="table2_footnote3">3</a>: Historical shares of wastewater treatment are estimated as the respective sector's withdrawal volume, minus consumptive uses, times the region's wastewater treatment shares, estimated by nation in Liu et al. (2016). In the future these shares increase with per-capita GDP, similar to the representation of pollutant emissions abatement in the [Emissions module](emissions.html).
 
+#### Energy Intensities
+With the exception of water abstraction, the energy intensities by sector and process used in GCAM are equal across all regions, and are equal to the 50th percentile of the energy intensities, first published in Liu et al. (2016) and later re-published with slight modifications in Table S3 of Kyle et al. (2021). The inter-regional variation in abstraction-related energy intensity comes from region- and sector-specific shares of groundwater versus surface water. The values are shown in Table 3.
+
+**Table 3: Assumed Energy Intensities by process**
+
+| Sector | Process | Fuel | Energy Intensity <br> (kWh per $$m^3$$) |
+| :--- | :--- | :--- | :-: |
+| Desalinated water | Reverse osmosis | Electricity | 2.75 |
+| Desalinated water | Thermal distillation | Natural gas or liquid fuels | 58.3 |
+| Irrigation water | Abstraction - surface water | Electricity | 0.079 |
+| Irrigation water | Abstraction - ground water | Electricity | 0.185 |
+| Industry | Abstraction - surface water | Electricity | 0.079 |
+| Industry | Abstraction - ground water | Electricity | 0.185 |
+| Industry | Treatment | Electricity | 0.178 |
+| Industry | Wastewater Treatment | Electricity | 0.775 |
+| Municipal | Abstraction - surface water | Electricity | 0.079 |
+| Municipal | Abstraction - ground water | Electricity | 0.185 |
+| Municipal | Treatment | Electricity | 0.235 |
+| Municipal | Distribution | Electricity | 0.247 |
+| Municipal | Wastewater Treatment | Electricity | 0.597 |
+
+Electricity used for non-renewable groundwater pumping is represented in future periods, using exogenous supply curves that have been constructed from simulated groundwater pumping over an 80 year period in <a href="https://github.com/JGCRI/superwell">Superwell</a>. The methods used are documented in Turner et al. (2019) and Kyle et al. (2021). From the Superwell output, supply curves are constructed for each GCAM region and water basin that consist of 20 "graded" points, each of which is assigned a total quantity of water, a non-energy-related cost of well construction and operation, and an electricity input-output coefficient. The grades are binned according to estimated total cost, using exogenous electricity prices; due to changes in electricity prices over time, the relative total costs of these grades may change over time.
 
 ## Equations 
-The equations that determine water supply are described here.
+The primary equation used in estimating energy-for-water by sector and process is as follows:
+
+$$
+EFW_{s,p}=W_{s,p}*EI_{s,p}
+$$
+
+Where $$EFW$$ is energy-for-water, $$s$$ is sector, $$p$$ is process, $$W$$ is water flow volume, and $$EI$$ is energy intensity.
+
+Non-renewable groundwater pumping energy intensity is estimated from Superwell output according to the following equation:
+
 
 #### Variable #1
 
